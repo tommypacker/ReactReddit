@@ -12,10 +12,12 @@ var {
 } = React;
 
 var getImageSource = require('./getImageSource');
+var getStyleFromRating = require('./getStyleFromRating');
+var getTextFromRating = require('./getTextFromRating');
 
 var PostCell = React.createClass({
   render: function() {
-    //var criticsScore = this.props.movie.ratings.critics_score;
+    var postRating = this.props.post.data.score;
     var TouchableElement = TouchableHighlight;
     return (
       <View>
@@ -32,16 +34,20 @@ var PostCell = React.createClass({
               style={styles.cellImage}
             />
             <View style={styles.textContainer}>
-              <Text style={styles.movieTitle} numberOfLines={2}>
+              <Text style={styles.postTitle} numberOfLines={2}>
                 {this.props.post.data.title}
               </Text>
-              <Text style={styles.movieYear} numberOfLines={1}>
+              <Text style={styles.postYear} numberOfLines={1}>
                 {this.props.post.data.author}
                 {' '}&bull;{' '}
+                <Text style={getStyleFromRating(postRating)}>
+                  Rating: {getTextFromRating(postRating)}
+                </Text>
               </Text>
             </View>
           </View>
         </TouchableElement>
+        <View style={styles.separator} />
       </View>
     );
   }
@@ -51,13 +57,13 @@ var styles = StyleSheet.create({
   textContainer: {
     flex: 1,
   },
-  movieTitle: {
+  postTitle: {
     flex: 1,
     fontSize: 16,
     fontWeight: '500',
     marginBottom: 2,
   },
-  movieYear: {
+  postYear: {
     color: '#999999',
     fontSize: 12,
   },
@@ -69,7 +75,7 @@ var styles = StyleSheet.create({
   },
   cellImage: {
     backgroundColor: '#dddddd',
-    height: 93,
+    height: 60,
     marginRight: 10,
     width: 60,
   },
@@ -77,6 +83,10 @@ var styles = StyleSheet.create({
     backgroundColor: 'rgba(0, 0, 0, 0.1)',
     height: StyleSheet.hairlineWidth,
     marginLeft: 4,
+  },
+  separator: {
+     height: 1,
+     backgroundColor: '#dddddd'
   },
 });
 

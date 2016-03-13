@@ -40,10 +40,6 @@ var styles = StyleSheet.create({
     author: {
         color: '#656565'
     },
-    separator: {
-       height: 1,
-       backgroundColor: '#dddddd'
-    },
     listView: {
       marginTop: 64,
       marginBottom: 49,
@@ -92,7 +88,7 @@ class PostList extends Component {
             dataSource={this.state.dataSource}
             renderRow={this.renderPost.bind(this)}
             style={styles.listView}
-            />
+          />
         );
     }
 

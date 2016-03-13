@@ -16,9 +16,9 @@ var styles = StyleSheet.create({
         alignItems: 'center'
     },
     image: {
-        width: 107,
-        height: 165,
-        padding: 10
+        width: 200,
+        height: 200,
+        padding: 20
     },
     description: {
         padding: 10,
@@ -31,9 +31,10 @@ class PostDetail extends Component {
   render(){
     var post = this.props.post;
     var description = (typeof post.data.title !== 'undefined') ? post.data.title : '';
+    var imageURI = (typeof post.data.thumbnail !== 'undefined') ? post.data.thumbnail : '';
     return (
       <View style={styles.container}>
-        
+          <Image style={styles.image} source={{uri: imageURI}} />
           <Text style={styles.description}>{description}</Text>
       </View>
     );
