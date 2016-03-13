@@ -21,10 +21,11 @@ class Home extends Component {
     render() {
         return (
   	       <NavigatorIOS
+           barTintColor = "#cee3f8"
             style={styles.container}
             ref= 'nav'
             initialRoute={{
-              title: "Reddit Home Page",
+              title: "Reddit Front Page",
               component: PostList
             }}/>
         );

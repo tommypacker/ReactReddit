@@ -29,20 +29,22 @@ var PostCell = React.createClass({
             {/* $FlowIssue #7363964 - There's a bug in Flow where you cannot
               * omit a property or set it to undefined if it's inside a shape,
               * even if it isn't required */}
+
+            <View style={styles.scoreContainer}>
+              <Text style={styles.postScore}>
+                {this.props.post.data.score}
+              </Text>
+            </View>
             <Image
               source={getImageSource(this.props.post, 'det')}
               style={styles.cellImage}
             />
             <View style={styles.textContainer}>
-              <Text style={styles.postTitle} numberOfLines={2}>
+              <Text style={styles.postTitle} numberOfLines={3}>
                 {this.props.post.data.title}
               </Text>
-              <Text style={styles.postYear} numberOfLines={1}>
+              <Text style={styles.postAuthor} numberOfLines={1}>
                 {this.props.post.data.author}
-                {' '}&bull;{' '}
-                <Text style={getStyleFromRating(postRating)}>
-                  Rating: {getTextFromRating(postRating)}
-                </Text>
               </Text>
             </View>
           </View>
@@ -57,21 +59,31 @@ var styles = StyleSheet.create({
   textContainer: {
     flex: 1,
   },
+  scoreContainer:{
+    width: 45,
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
   postTitle: {
     flex: 1,
     fontSize: 16,
     fontWeight: '500',
     marginBottom: 2,
   },
-  postYear: {
+  postAuthor: {
     color: '#999999',
     fontSize: 12,
+  },
+  postScore:{
+    color: '#999999',
+    marginRight: 7,
   },
   row: {
     alignItems: 'center',
     backgroundColor: 'white',
     flexDirection: 'row',
-    padding: 5,
+    padding: 7,
   },
   cellImage: {
     backgroundColor: '#dddddd',

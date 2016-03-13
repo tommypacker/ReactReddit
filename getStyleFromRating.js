@@ -20,20 +20,18 @@ var {
   StyleSheet,
 } = React;
 
-var MAX_VALUE = 200;
-
 import type { StyleObj } from 'StyleSheetTypes';
 
 function getStyleFromRating(score: number): StyleObj {
-  if (score < 0) {
+  if (score < 1000) {
     return styles.noScore;
   }
 
-  var normalizedScore = Math.round((score / 100) * MAX_VALUE);
+  var normalizedScore = Math.round(score / 10000);
   return {
     color: 'rgb(' +
-      (MAX_VALUE - normalizedScore) + ', ' +
-      normalizedScore + ', ' +
+      (255) + ', ' +
+      165 + ', ' +
       0 +
     ')'
   };

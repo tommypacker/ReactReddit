@@ -19,6 +19,7 @@ class Search extends Component {
     render() {
         return (
           <NavigatorIOS
+          barTintColor = "#cee3f8"
            initialRoute={{
              title: "Search Reddit",
              component: SearchReddit

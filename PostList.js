@@ -33,13 +33,6 @@ var styles = StyleSheet.create({
     rightContainer: {
         flex: 1
     },
-    title: {
-        fontSize: 20,
-        marginBottom: 8
-    },
-    author: {
-        color: '#656565'
-    },
     listView: {
       marginTop: 64,
       marginBottom: 49,
