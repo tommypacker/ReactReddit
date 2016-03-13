@@ -22,6 +22,7 @@ class Home extends Component {
         return (
   	       <NavigatorIOS
             style={styles.container}
+            ref= 'nav'
             initialRoute={{
               title: "Reddit Home Page",
               component: PostList

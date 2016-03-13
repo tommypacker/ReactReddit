@@ -12,8 +12,9 @@ import React, {
   ActivityIndicatorIOS
 } from 'react-native';
 
-var FAKE_REDDIT_DATA = [{children: {title: 'Title', author: "Tommy Yu", url: 'https://www.washingtonpost.com/news/the-watch/wp/2016/03/10/surprise-nsa-data-will-soon-routinely-be-used-for-domestic-policing-that-has-nothing-to-do-with-terrorism', thumbnail: 'https://i.imgur.com/IxjpT42h.jpg'}},]
 var REQUEST_URL = 'https://www.reddit.com/.json';
+var PostCell = require('./PostCell');
+var PostDetail = require('./PostDetail');
 
 var styles = StyleSheet.create({
   container: {
@@ -68,33 +69,7 @@ class PostList extends Component {
 
     componentDidMount() {
         this.fetchData();
-
     }
-
-    render() {
-      if (this.state.isLoading) {
-           return this.renderLoadingView();
-       }
-        return (
-          <ListView
-            dataSource={this.state.dataSource}
-            renderRow={this.renderPost.bind(this)}
-            style={styles.listView}
-            />
-        );
-    }
-
-    renderLoadingView() {
-    return (
-        <View style={styles.loading}>
-            <ActivityIndicatorIOS
-                size='large'/>
-            <Text>
-                Loading books...
-            </Text>
-        </View>
-    );
-}
 
     fetchData(){
       fetch(REQUEST_URL)
@@ -108,31 +83,60 @@ class PostList extends Component {
       .done();
     }
 
+    render() {
+      if (this.state.isLoading) {
+           return this.renderLoadingView();
+       }
+        return (
+          <ListView navigator={this.props.navigator}
+            dataSource={this.state.dataSource}
+            renderRow={this.renderPost.bind(this)}
+            style={styles.listView}
+            />
+        );
+    }
+
+    renderLoadingView() {
+      return (
+          <View style={styles.loading}>
+              <ActivityIndicatorIOS
+                  size='large'/>
+              <Text>
+                  Loading posts...
+              </Text>
+          </View>
+        );
+    }
+
     renderPost(post) {
        return (
-            <TouchableHighlight>
-                <View>
-                    <View style={styles.container}>
-                        <Image
-                            source={{uri: post.data.thumbnail}}
-                            style={styles.thumbnail} />
-                        <View style={styles.rightContainer}>
-                            <Text style={styles.title}>{post.data.title}</Text>
-                            <Text style={styles.author}>{post.data.author}</Text>
-                        </View>
-                    </View>
-                    <View style={styles.separator} />
-                </View>
-            </TouchableHighlight>
+            <PostCell
+              key={post.id}
+              onSelect={() => this.selectMovie(post)}
+              //onHighlight={() => highlightRowFunc(sectionID, rowID)}
+              //onUnhighlight={() => highlightRowFunc(null, null)}
+              post={post}
+            />
        );
    }
 
+   selectMovie(post: Object) {
+     this.props.navigator.push({
+       title: post.data.title,
+       component: PostDetail,
+       passProps: {post},
+     });
+   }
 
-
+   showPostDetail(post: Object) {
+      var PostDetail = require('./PostDetail');
+      this.props.navigator.push({
+           title: post.data.title,
+           component: PostDetail,
+           passProps: {post},
+       });
+   }
 }
-
-
-
 
 
 
