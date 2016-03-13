@@ -15,8 +15,9 @@
  */
 'use strict';
 
+
 function getImageSource(post: Object, kind: ?string): {uri: ?string} {
-  var uri = post && post.data.thumbnail ? post.data.thumbnail : null;
+  var uri = post && post.data.thumbnail ? post.data.thumbnail : "https://cdn2.iconfinder.com/data/icons/metro-ui-icon-set/128/Reddit.png";
   if (uri && kind) {
     uri = uri.replace('tmb', kind);
   }

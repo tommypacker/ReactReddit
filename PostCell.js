@@ -26,10 +26,6 @@ var PostCell = React.createClass({
           onShowUnderlay={this.props.onHighlight}
           onHideUnderlay={this.props.onUnhighlight}>
           <View style={styles.row}>
-            {/* $FlowIssue #7363964 - There's a bug in Flow where you cannot
-              * omit a property or set it to undefined if it's inside a shape,
-              * even if it isn't required */}
-
             <View style={styles.scoreContainer}>
               <Text style={styles.postScore}>
                 {this.props.post.data.score}
