@@ -12,9 +12,131 @@ import React, {
   ActivityIndicatorIOS
 } from 'react-native';
 
-var REQUEST_URL = 'https://www.reddit.com/.json';
 var PostCell = require('./PostCell');
 var PostDetail = require('./PostDetail');
+var REQUEST_URL = 'https://www.reddit.com/.json';
+var nextPageURL = 'https://www.reddit.com/.json?count=25&after='
+var counter = 0;
+var lastId = '';
+
+var posts = [];
+
+class PostList extends Component {
+    constructor(props) {
+         super(props);
+         this.state = {
+           isLoading: true,
+           isLoadingTail: false,
+           dataSource: new ListView.DataSource({
+               rowHasChanged: (row1, row2) => row1 !== row2
+           })
+         };
+     }
+
+    componentDidMount() {
+        this.posts = [],
+        this.fetchData();
+    }
+
+    fetchData(){
+      fetch(REQUEST_URL)
+      .then((response) => response.json())
+      .then((responseData) => {
+        this.setState({
+            dataSource: this.getDataSource(responseData.data.children),
+            isLoading: false,
+            isLoadingTail: false
+        });
+      })
+      .done();
+    }
+
+    render() {
+      if (this.state.isLoading) {
+           return this.renderLoadingView();
+       }
+        return (
+          <ListView
+            onEndReached={this.onEndReached.bind(this)}
+            onEndReachedThreshold={5}
+            dataSource={this.state.dataSource}
+            renderRow={this.renderPost.bind(this)}
+            style={styles.listView}
+          />
+        );
+    }
+
+    renderLoadingView() {
+      return (
+          <View style={styles.loading}>
+              <ActivityIndicatorIOS
+                  size='large'/>
+              <Text>
+                  Loading posts...
+              </Text>
+          </View>
+        );
+    }
+
+    renderPost(post) {
+       counter += 1;
+       if(counter % 25 == 0){
+         lastId = post.data.id;
+       }
+       return (
+            <PostCell
+              key={post.id}
+              onSelect={() => this.selectMovie(post)}
+              //onHighlight={() => highlightRowFunc(sectionID, rowID)}
+              //onUnhighlight={() => highlightRowFunc(null, null)}
+              post={post}
+            />
+       );
+    }
+
+    onEndReached(){
+      //console.log("end reached");
+      if (this.state.isLoadingTail) {
+        // We're already fetching or have all the elements so noop
+        return;
+      }
+      this.setState({
+        isLoadingTail: true,
+      });
+      fetch("https://www.reddit.com/r/nflstreams/.json")
+      .then((response) => response.json())
+      .then((responseData) => {
+        this.setState({
+            dataSource: this.getDataSource(responseData.data.children),
+            isLoading: false,
+            isLoadingTail: false
+        });
+      })
+      .done();
+    }
+
+    getDataSource(morePosts: ListView.DataSource){
+      this.posts = this.posts.concat(morePosts);
+      return this.state.dataSource.cloneWithRows(this.posts);
+    }
+
+   selectMovie(post: Object) {
+     this.props.navigator.push({
+       title: post.data.title,
+       component: PostDetail,
+       passProps: {post},
+     });
+   }
+
+   showPostDetail(post: Object) {
+      var PostDetail = require('./PostDetail');
+      this.props.navigator.push({
+           title: post.data.title,
+           component: PostDetail,
+           passProps: {post},
+       });
+   }
+}
 
 var styles = StyleSheet.create({
   container: {
@@ -44,88 +166,6 @@ var styles = StyleSheet.create({
         justifyContent: 'center'
     }
 });
-
-class PostList extends Component {
-    constructor(props) {
-         super(props);
-         this.state = {
-           isLoading: true,
-           dataSource: new ListView.DataSource({
-               rowHasChanged: (row1, row2) => row1 !== row2
-           })
-         };
-     }
-
-    componentDidMount() {
-        this.fetchData();
-    }
-
-    fetchData(){
-      fetch(REQUEST_URL)
-      .then((response) => response.json())
-      .then((responseData) => {
-        this.setState({
-            dataSource: this.state.dataSource.cloneWithRows(responseData.data.children),
-            isLoading: false
-        });
-      })
-      .done();
-    }
-
-    render() {
-      if (this.state.isLoading) {
-           return this.renderLoadingView();
-       }
-        return (
-          <ListView navigator={this.props.navigator}
-            dataSource={this.state.dataSource}
-            renderRow={this.renderPost.bind(this)}
-            style={styles.listView}
-          />
-        );
-    }
-
-    renderLoadingView() {
-      return (
-          <View style={styles.loading}>
-              <ActivityIndicatorIOS
-                  size='large'/>
-              <Text>
-                  Loading posts...
-              </Text>
-          </View>
-        );
-    }
-
-    renderPost(post) {
-       return (
-            <PostCell
-              key={post.id}
-              onSelect={() => this.selectMovie(post)}
-              //onHighlight={() => highlightRowFunc(sectionID, rowID)}
-              //onUnhighlight={() => highlightRowFunc(null, null)}
-              post={post}
-            />
-       );
-   }
-
-   selectMovie(post: Object) {
-     this.props.navigator.push({
-       title: post.data.title,
-       component: PostDetail,
-       passProps: {post},
-     });
-   }
-
-   showPostDetail(post: Object) {
-      var PostDetail = require('./PostDetail');
-      this.props.navigator.push({
-           title: post.data.title,
-           component: PostDetail,
-           passProps: {post},
-       });
-   }
-}
 
 
 

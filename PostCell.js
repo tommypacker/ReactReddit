@@ -66,6 +66,7 @@ var styles = StyleSheet.create({
     fontSize: 16,
     fontWeight: '500',
     marginBottom: 2,
+    marginRight: 5
   },
   postAuthor: {
     color: '#999999',
