@@ -14,8 +14,7 @@ import React, {
 
 var PostCell = require('./PostCell');
 var PostDetail = require('./PostDetail');
-var REQUEST_URL = 'https://www.reddit.com/.json';
-var nextPageURL = 'https://www.reddit.com/.json?count=25&after='
+var PAGE_REQUEST_URL = 'https://www.reddit.com/.json?count=25&after='
 var counter = 0;
 var lastId = '';
 
@@ -39,7 +38,7 @@ class PostList extends Component {
     }
 
     fetchData(){
-      fetch(REQUEST_URL)
+      fetch(PAGE_REQUEST_URL)
       .then((response) => response.json())
       .then((responseData) => {
         this.setState({
@@ -80,7 +79,8 @@ class PostList extends Component {
 
     renderPost(post) {
        counter += 1;
-       if(counter % 25 == 0){
+       console.log(lastId);
+       if(counter % 25 == 0 && counter > 0){
          lastId = post.data.id;
        }
        return (
@@ -103,7 +103,7 @@ class PostList extends Component {
       this.setState({
         isLoadingTail: true,
       });
-      fetch("https://www.reddit.com/r/nflstreams/.json")
+      fetch(PAGE_REQUEST_URL + 't3_' + lastId)
       .then((response) => response.json())
       .then((responseData) => {
         this.setState({
