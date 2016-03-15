@@ -31,7 +31,7 @@ class PostDetail extends Component {
   render(){
     var post = this.props.post;
     var description = (typeof post.data.title !== 'undefined') ? post.data.title : '';
-    var imageURI = (typeof post.data.thumbnail !== 'undefined') ? post.data.thumbnail : '';
+    var imageURI = (typeof post.data.thumbnail !== 'undefined') ? post.data.thumbnail : "https://cdn2.iconfinder.com/data/icons/metro-ui-icon-set/128/Reddit.png";
     return (
       <View style={styles.container}>
           <Image style={styles.image} source={{uri: imageURI}} />
