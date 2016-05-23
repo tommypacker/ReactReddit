@@ -7,6 +7,7 @@ import React, {
   Text,
   View,
   Image,
+  Linking,
 } from 'react-native';
 
 
@@ -32,10 +33,12 @@ class PostDetail extends Component {
     var post = this.props.post;
     var description = (typeof post.data.title !== 'undefined') ? post.data.title : '';
     var imageURI = (typeof post.data.thumbnail !== 'undefined') ? post.data.thumbnail : "https://cdn2.iconfinder.com/data/icons/metro-ui-icon-set/128/Reddit.png";
+    var url = (typeof post.data.url !== 'undefined') ? post.data.url : "";
     return (
       <View style={styles.container}>
           <Image style={styles.image} source={{uri: imageURI}} />
           <Text style={styles.description}>{description}</Text>
+          <Text style={styles.description} onPress={() => Linking.openURL(url).catch(err => console.error('An error occurred', err))}>{url}</Text>
       </View>
     );
   }

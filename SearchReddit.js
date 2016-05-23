@@ -32,10 +32,17 @@ class SearchReddit extends Component {
            hidden='true'
            size='large'/> ) :
        ( <View/>);
-      return (
-          <View>
-    </View>
-      );
+       return (
+         <View style={styles.container}>
+           <Searchbar
+             onSearchChange={this.onSearchChange}
+             isLoading={this.state.isLoading}
+             onFocus={() =>
+               this.refs.listview && this.refs.listview.getScrollResponder().scrollTo({ x: 0, y: 0 })}
+           />
+           <View style={styles.separator} />
+         </View>
+       );
   }
 }
 
